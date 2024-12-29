@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Anasayfa</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+        }
+
+        
+        nav {
+            background-color: #1c1c1c;
+            padding: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #feb47b;
+        }
+
+        .container {
+            margin: 50px auto;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h3 {
+            color: #fff;
+            text-align: center;
+        }
+
+        .btn-danger {
+            background-color: #cf0000;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-danger:hover {
+            background-color: #a04545;
+        }
+
+        .mode-switch {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        body.day {
+            background: #fff;
+            color: #000;
+        }
+
+        body.night {
+            background: #121212;
+            color: #fff;
+        }
+
+        footer {
+            background-color: #1c1c1c;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="day">
+    
+    <nav>
+        <ul>
+            <li><a href="/">Anasayfa</a></li>
+            <li><a href="/todolistem">Todo Listelerim</a></li>
+            <li><div class="mode-switch" onclick="document.body.classList.toggle('night');">Gece Modu</div></li>
+        </ul>
+    </nav>
+
+    
+    <div class="container">
+        <h3>Todo List</h3>
+        <hr>
+
+        <form action="/add" method="post">
+            <div class="form-group">
+                <label for="formGroupExampleInput">Todo Başlık</label>
+                <input type="text" class="form-control" name="title" id="formGroupExampleInput" placeholder="Todo Giriniz..." required>
+                <button type="submit" class="btn btn-danger mt-2">Ekle</button>
+            </div>
+        </form>
+
+        <hr>
+
+        {% if todos == [] %}
+        <div class="alert alert-warning" role="alert">
+            Herhangi bir todonuz bulunmuyor...
+        </div>
+        {% else %}
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Todo Başlık</th>
+                    <th scope="col">Durum</th>
+                    <th scope="col">Durum Güncelle</th>
+                    <th scope="col">Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <th scope="row">{{todo.id}}</th>
+                    <td>{{todo.title}}</td>
+                    <td>{% if todo.complete == False %}Tamamlanmadı{% else %}Tamamlandı{% endif %}</td>
+                    <td><a href="/complete/{{todo.id}}" class="btn btn-success">Tamamla</a></td>
+                    <td><a href="/delete/{{todo.id}}" class="btn btn-danger">Sil</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+    
+    <footer>
+        &copy; 2024 Todo Uygulaması | Tüm Hakları Saklıdır
+    </footer>
+</body>
+</html>
